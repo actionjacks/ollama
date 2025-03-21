@@ -22,15 +22,14 @@ EXPOSE 11436
 
 WORKDIR /app
 
-# Copy context files (model data)
+# https://github.com/ollama/ollama/blob/main/README.md
+# Copy context files (custom-model data) Based on this file it can respond based on this data. (Customize a prompt)
 COPY ./context/doc.txt /app/context/doc.txt
 
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Użycie ENTRYPOINT, aby kontener był aktywny i odpowiedzialny za uruchomienie Ollama
+# Using ENTRYPOINT to make the container active and responsible for running Ollam.
 ENTRYPOINT ["/entrypoint.sh"]
 
-# Start Ollama i pobieranie modeli
-# ENTRYPOINT powinien uruchomić proces i nie wymagać "tail -f /dev/null"

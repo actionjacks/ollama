@@ -1,29 +1,35 @@
-1. Instalacja NVIDIA Container Toolkit
-Najpierw upewnij się, że masz zainstalowane sterowniki NVIDIA na hoście. Następnie zainstaluj NVIDIA Container Toolkit:
+# 1. Installing NVIDIA Container Toolkit
 
-bash
-Copy
-# Dodaj repozytorium NVIDIA Container Toolkit
+First, ensure that NVIDIA drivers are installed on the host machine. Then, install the NVIDIA Container Toolkit:
+
+```bash
+# Add the NVIDIA Container Toolkit repository
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
    && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
    && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-# Zaktualizuj pakiety i zainstaluj NVIDIA Container Toolkit
+# Update packages and install the NVIDIA Container Toolkit
 sudo apt-get update
 sudo apt-get install -y nvidia-docker2
 
-# Zrestartuj Docker
+# Restart Docker
 sudo systemctl restart docker
-
-# notatki TODO -remove
 ```
+
+# Limitations
+When starting the containers, the models declared for download require time to be fetched.
+Allow sufficient time for the models to be downloaded.
+Additionally, the available memory allocated for running models in Docker may also be a limiting factor.
+
+# Notes (TODO - remove) In order not to copy all the time.
+```bash
 docker exec -it ollama-ollamadeepseek-1 sh
 ```
 
-```
+```bash
 docker logs ollama-ollamadeepseek-1
 ```
 
-```
+```bash
 ollama run llama3:8b "Hello, how are you?"
 ```
