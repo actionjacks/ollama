@@ -21,6 +21,21 @@ When starting the containers, the models declared for download require time to b
 Allow sufficient time for the models to be downloaded.
 Additionally, the available memory allocated for running models in Docker may also be a limiting factor.
 
+OpenWebUI:
+```json
+http://localhost:8333
+```
+
+Ollama API: 
+```json
+http://localhost:11436
+```
+
+Go:
+```json
+http://localhost:8081
+```
+
 # Notes (TODO - remove) In order not to copy all the time.
 ```bash
 docker exec -it ollama-ollamadeepseek-1 sh

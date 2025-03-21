@@ -24,7 +24,6 @@ services:
            - '11436:11436'
         volumes:
           - './ollama:/root/.ollama'  # Folder for storing models.
-          - './api:/app/api'  # API Folder.
         environment:
             OLLAMA_HOST: 0.0.0.0  # Host on which Ollama should listen.
             OLLAMA_PORT: 11436  # The port that Ollama listens to internally.
@@ -45,6 +44,22 @@ services:
                   capabilities: [gpu]
         runtime: nvidia
         #
+      
+    goapp:
+      build:
+          context: ./api  # Path to your Go application directory
+          dockerfile: Dockerfile  # Dockerfile for your Go application
+      restart: unless-stopped
+      ports:
+        - '8081:8080'  # Expose port 8080 of the Go app to host port 8081
+      volumes:
+        - './api:/app'  # Mount your Go application folder
+      environment:
+          OLLAMA_API_URL: http://ollamadeepseek:11436  # URL to Ollama API
+      networks:
+        - ollama-network
+      depends_on:
+        - ollamadeepseek  # Ensure Ollama is running before starting the Go app
 
 networks:
     ollama-network:
