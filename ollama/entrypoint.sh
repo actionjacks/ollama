@@ -9,6 +9,7 @@ else
 fi
 
 echo "Starting Ollama..."
+export OLLAMA_HOST=0.0.0.0:$OLLAMA_PORT
 ollama serve & # Start Ollama in the background
 
 sleep 5         # Wait for it to initialize

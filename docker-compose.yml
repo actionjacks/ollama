@@ -12,6 +12,8 @@ services:
           - './open-webui:/app/backend/data'
         environment:
             OLLAMA_BASE_URL: http://ollamadeepseek:11436  # Upewnij się, że adres jest zgodny z portem w ollamadeepseek (http://localhost:8333)
+        networks:
+          - ollama-network
 
     ollamadeepseek: 
         build:
@@ -27,6 +29,8 @@ services:
             OLLAMA_HOST: 0.0.0.0  # Host na którym Ollama ma nasłuchiwać
             OLLAMA_PORT: 11436  # Port, na którym Ollama nasłuchuje wewnętrznie
             OLLAMA_MODELS: /root/.ollama/models  # Folder z modelami, zapewne warto podać pełną ścieżkę
+        networks:
+          - ollama-network
         deploy:
           resources:
             limits:
@@ -37,3 +41,7 @@ services:
               #   - driver: nvidia
               #     count: all
               #     capabilities: [gpu]
+
+networks:
+    ollama-network:
+        driver: bridge
