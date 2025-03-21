@@ -18,12 +18,6 @@ echo "Downloading models..."
 # ollama pull deepseek-r1:14b
 ollama pull llama3:8b | tee /var/log/ollama_pull.log
 
-# If there is a startup file in the api directory, run it (e.g. Python)
-# if [ -f /app/api/main.py ]; then
-#     echo "Uruchamiam API..."
-#     python3 /app/api/main.py &
-# fi
-
 if [ -f "/app/context/doc.txt" ]; then
     echo "Creating custom model based on doc.txt..."
     ollama create netiskuba -f /app/context/doc.txt
