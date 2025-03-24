@@ -21,7 +21,7 @@ echo "Downloading models..."
 
 ollama pull "${OLLAMA_MODEL}" | tee /var/log/ollama_pull.log
 
-if [ -f "/app/context/doc.txt" ]; then
+if [ -f "/app/context/doc.txt" ]; then # Creating a model based on (llama3:8b) from the context of the file.
     echo "Creating custom model based on doc.txt..."
     ollama create netiskuba -f /app/context/doc.txt
 fi
