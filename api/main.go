@@ -5,16 +5,38 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
+// Define the request body structure
+type OllamaRequest struct {
+	Prompt string `json:"prompt"`
+	Model  string `json:"model"`
+	Stream bool   `json:"stream"`
+}
+
 func main() {
+	// Load environment variables from .env file
+	if err := godotenv.Load(); err != nil {
+		panic("Failed to load .env file")
+	}
+
+	// Get environment variables
+	ollamaModel := os.Getenv("OLLAMA_MODEL")
+	ollamaAPIURL := os.Getenv("OLLAMA_API_URL")
+
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "App running",
+			"data": gin.H{
+				"OLLAMA_MODEL":   ollamaModel,
+				"OLLAMA_API_URL": ollamaAPIURL,
+			},
 		})
 	})
 
@@ -27,12 +49,13 @@ func main() {
 			return
 		}
 
-		// Prepare the request body for Ollama API
-		requestBody, err := json.Marshal(map[string]interface{}{
-			"prompt": prompt,
-			"model":  "llama3:8b", // Replace with your model name
-			"stream": false,       // Disable streaming for simplicity
+		// Create the request body using the struct
+		requestBody, err := json.Marshal(OllamaRequest{
+			Prompt: prompt,
+			Model:  ollamaModel, // Use the model from .env
+			Stream: false,
 		})
+
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Failed to create request body",
@@ -55,6 +78,15 @@ func main() {
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Failed to read Ollama API response: " + err.Error(),
+			})
+			return
+		}
+
+		if response.StatusCode != http.StatusOK {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error":        "Ollama API returned an error",
+				"status_code":  response.StatusCode,
+				"raw_response": string(responseBody),
 			})
 			return
 		}

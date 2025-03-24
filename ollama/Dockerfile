@@ -22,6 +22,8 @@ EXPOSE 11436
 
 WORKDIR /app
 
+COPY ./.env /app/.env
+
 # https://github.com/ollama/ollama/blob/main/README.md
 # Copy context files (custom-model data) Based on this file it can respond based on this data. (Customize a prompt)
 COPY ./context/doc.txt /app/context/doc.txt

@@ -1,4 +1,5 @@
 #!/bin/sh
+export $(grep -v '^#' /app/.env | xargs)
 export OLLAMA_PORT=11436
 
 if [ -z "$(which nvidia-smi)" ]; then
@@ -18,7 +19,7 @@ sleep 5 # Wait for it to initialize
 
 echo "Downloading models..."
 
-ollama pull llama3:8b | tee /var/log/ollama_pull.log
+ollama pull "${OLLAMA_MODEL}" | tee /var/log/ollama_pull.log
 
 if [ -f "/app/context/doc.txt" ]; then
     echo "Creating custom model based on doc.txt..."
