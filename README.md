@@ -33,7 +33,7 @@ http://localhost:11436
 
 Go:
 ```json
-http://localhost:8081
+http://localhost:8081 # note that the goapp application in .env listens on (8080).
 ```
 
 # Notes (TODO - remove) In order not to copy all the time.
