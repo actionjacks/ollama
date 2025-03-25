@@ -23,8 +23,11 @@ func (s *APIServer) Start() error {
 
 	ask.RegisterRoutes(subrouter)
 
-	subrouter.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		utils.WriteJSON(w, http.StatusOK, map[string]string{"message": "App running"})
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		utils.WriteJSON(
+			w,
+			http.StatusOK,
+			map[string]string{"message": "App running"})
 	}).Methods(http.MethodGet)
 
 	log.Println("Listening on", s.addr)
